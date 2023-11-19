@@ -4,33 +4,44 @@ import { useState } from 'react';
 import AnotherComponent from './AnotherComponent';
 
 function App() {
-
   const [count, setCount] = useState(0);
 
   function decrement() {
-    setCount(previousValue => previousValue - 1)
+    setCount(previousValue => previousValue - 1);
   }
 
   function increment() {
-    setCount(previousValue => previousValue + 1)
+    setCount(previousValue => previousValue + 1);
   }
 
   const someStyle = {
     background: 'blue',
     color: 'white',
     fontSize: '28px',
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  };
 
   return (
     <div className="App">
       <header className="App-header">
-
         <AnotherComponent name="John Doe" />
 
-        <div style={{ display: 'flex', flexDirection: 'column', justifyItems: 'center', alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyItems: 'center',
+            alignItems: 'center',
+          }}
+        >
           <span>{count}</span>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
             <button onClick={decrement}>-</button>
             <button onClick={increment}>+</button>
           </div>
@@ -40,13 +51,12 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
-        {
-          true &&
+        {true && (
           <div>
             <p style={someStyle}>{2 + 3}</p>
             <p style={{ background: 'blue' }}>{2 + 3}</p>
           </div>
-        }
+        )}
         <a
           className="App-link"
           href="https://reactjs.org"
