@@ -130,6 +130,17 @@ function App() {
   return (
     <div className="todo-app-container">
       <div className="todo-app">
+        <div className="name-container">
+          <h2>What's your name?</h2>
+          <input
+            type="text"
+            className="todo-input"
+            placeholder="Whats your name"
+          />
+
+          <p className="name-label">Hello, name</p>
+        </div>
+
         <h2>Todo App</h2>
 
         <TodoForm addTodo={addTodo} />
