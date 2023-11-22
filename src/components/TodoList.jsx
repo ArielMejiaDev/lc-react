@@ -4,6 +4,7 @@ import TodoItemsRemaining from './TodoItemsRemaining';
 import TodoClearCompleted from './TodoClearCompleted';
 import TodoCompleteAll from './TodoCompleteAll';
 import TodoFilters from './TodoFilters';
+import useToggle from '../hooks/useToggle';
 
 TodoList.propTypes = {
   todos: PropTypes.array.isRequired,
@@ -20,6 +21,10 @@ TodoList.propTypes = {
 
 function TodoList(props) {
   const [filter, setFilter] = useState('all');
+
+  const [isFeatureOneVisible, setFeatureOneVisible] = useToggle();
+
+  const [isFeatureTwoVisible, setFeatureTwoVisible] = useToggle();
 
   return (
     <>
@@ -80,22 +85,35 @@ function TodoList(props) {
         ))}
       </ul>
 
-      <div className="check-all-container">
-        <TodoCompleteAll completeAllTodos={props.completeAllTodos} />
-
-        <TodoItemsRemaining remaining={props.remaining} />
+      <div className="toggles-container">
+        <button onClick={setFeatureOneVisible} className="button">
+          Features One Toggle
+        </button>
+        <button onClick={setFeatureTwoVisible} className="button">
+          Features Two Toggle
+        </button>
       </div>
 
-      <div className="other-buttons-container">
-        <TodoFilters
-          filter={filter}
-          setFilter={setFilter}
-          todosFiltered={props.todosFiltered}
-        />
-        <div>
-          <TodoClearCompleted clearCompleted={props.clearCompleted} />
+      {isFeatureOneVisible && (
+        <div className="check-all-container">
+          <TodoCompleteAll completeAllTodos={props.completeAllTodos} />
+
+          <TodoItemsRemaining remaining={props.remaining} />
         </div>
-      </div>
+      )}
+
+      {isFeatureTwoVisible && (
+        <div className="other-buttons-container">
+          <TodoFilters
+            filter={filter}
+            setFilter={setFilter}
+            todosFiltered={props.todosFiltered}
+          />
+          <div>
+            <TodoClearCompleted clearCompleted={props.clearCompleted} />
+          </div>
+        </div>
+      )}
     </>
   );
 }

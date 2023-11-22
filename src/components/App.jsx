@@ -1,37 +1,51 @@
 import '../reset.css';
 import '../App.css';
 import NoTodos from './NoTodos';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
+import useLocalStorage from '../hooks/useLocalStorage';
 
 function App() {
-  const [name, setName] = useState('');
+  // const [name, setName] = useState('');
+  const [name, setName] = useLocalStorage('name', '');
 
   const nameInputElement = useRef(null);
 
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: 'Finish React Series',
-      isComplete: false,
-      isEditing: false,
-    },
-    {
-      id: 2,
-      title: 'Go Brocery',
-      isComplete: true,
-      isEditing: false,
-    },
-    {
-      id: 3,
-      title: 'Take over world',
-      isComplete: false,
-      isEditing: false,
-    },
-  ]);
+  // const [todos, setTodos] = useState([
+  //   {
+  //     id: 1,
+  //     title: 'Finish React Series',
+  //     isComplete: false,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: 2,
+  //     title: 'Go Brocery',
+  //     isComplete: true,
+  //     isEditing: false,
+  //   },
+  //   {
+  //     id: 3,
+  //     title: 'Take over world',
+  //     isComplete: false,
+  //     isEditing: false,
+  //   },
+  // ]);
 
-  const [todoId, setTodoId] = useState(4);
+  const [todos, setTodos] = useLocalStorage('todos', []);
+
+  // it is a counter it starts at 4 at the very begging of the project,
+  // because we need a way to add a new one from the 3 hardcoded in todos state so the next one is four,
+  // but in addTodo function it would assign the value and increase the counter for the next time it is called when user add a new todo
+
+  // Now as it would not depend anymore from a piece of state... it depends on local storage and starts empty it would start in number 1 and addTodo still increase
+  // the code does not change in the remaining methods because the custom hook behind the scenes relies on useState and useEffect so
+  // it looks like it is not using it but it is in the custom hook
+
+  // const [todoId, setTodoId] = useState(4);
+
+  const [todoId, setTodoId] = useLocalStorage('todoIdForLocalStorage', 1);
 
   function deleteTodo(id) {
     setTodos([...todos].filter(todo => todo.id !== id));
@@ -105,7 +119,9 @@ function App() {
   }
 
   function remainingCalculation() {
-    // the line below would help to simulate a slow calculation
+    // The line below would help to simulate a slow calculation
+    // This slow operation would runs when any piece of state is updated... this is not performant
+    // Instead we can tight useMemo to cache the expense calculation and run it only when a piece of state is updated, in this case todos
     for (let index = 0; index < 200000000; index++) {}
     return todos.filter(todo => !todo.isComplete).length;
   }
@@ -165,6 +181,17 @@ function App() {
     // Or tight it to a piece of state as [todos] would do, so it only works when component did unmount with todos state
   });
 
+  function handleNameInput(event) {
+    setName(event.target.value);
+    // now unnecesary but useful if there are not useLocalStorage hook
+    // localStorage.setItem('name', JSON.stringify(event.target.value));
+  }
+
+  useEffect(() => {
+    // now unnecesary but useful if there are not useLocalStorage hook
+    // setName(JSON.parse(localStorage.getItem('name') ?? ''));
+  }, []);
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
@@ -180,7 +207,7 @@ function App() {
               placeholder="Whats your name"
               ref={nameInputElement}
               defaultValue={name}
-              onChange={event => setName(event.target.value)}
+              onChange={handleNameInput}
             />
           </form>
 
