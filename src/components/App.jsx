@@ -1,11 +1,15 @@
 import '../reset.css';
 import '../App.css';
 import NoTodos from './NoTodos';
-import { useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import TodoForm from './TodoForm';
 import TodoList from './TodoList';
 
 function App() {
+  const [name, setName] = useState('');
+
+  const nameInputElement = useRef(null);
+
   const [todos, setTodos] = useState([
     {
       id: 1,
@@ -100,9 +104,13 @@ function App() {
     setTodoId(previousTodoId => previousTodoId + 1);
   }
 
-  function remaining() {
+  function remainingCalculation() {
+    // the line below would help to simulate a slow calculation
+    for (let index = 0; index < 200000000; index++) {}
     return todos.filter(todo => !todo.isComplete).length;
   }
+
+  const remaining = useMemo(remainingCalculation, [todos]);
 
   function clearCompleted() {
     setTodos([...todos].filter(todo => !todo.isComplete));
@@ -127,18 +135,56 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    console.log(
+      'this is the equivalent to componentDidUpdate, without any other second param, use effect is running whenever piece of state is running so it runs a lot...'
+    );
+  });
+
+  useEffect(() => {
+    console.log(
+      'This is the equivalent to componentDidUpdate, use effect runs only when a specific piece of state is changing... in this case Todos'
+    );
+  }, [todos]);
+
+  useEffect(() => {
+    // This is the equivalent of componentDidMount effect would run when the component is mounted only once
+    // This would focus an input when component is mounted
+    nameInputElement.current.focus();
+  }, []);
+
+  useEffect(() => {
+    // This is equivalent to componentDidUnmount
+    console.log('Add something like an event listener');
+
+    return function cleanUp() {
+      console.log('Clean up and remove the hypothetic event listener ...');
+    };
+
+    // You can add a second param as empty array [] to run this once when the component mounts
+    // Or tight it to a piece of state as [todos] would do, so it only works when component did unmount with todos state
+  });
+
   return (
     <div className="todo-app-container">
       <div className="todo-app">
         <div className="name-container">
           <h2>What's your name?</h2>
-          <input
-            type="text"
-            className="todo-input"
-            placeholder="Whats your name"
-          />
+          {/* <button onClick={() => nameInputElement.current.focus()}>
+            Get Ref
+          </button> */}
+          <form action="#">
+            <input
+              type="text"
+              className="todo-input"
+              placeholder="Whats your name"
+              ref={nameInputElement}
+              defaultValue={name}
+              onChange={event => setName(event.target.value)}
+            />
+          </form>
 
-          <p className="name-label">Hello, name</p>
+          {name && <p className="name-label">Hello, {name}</p>}
         </div>
 
         <h2>Todo App</h2>
