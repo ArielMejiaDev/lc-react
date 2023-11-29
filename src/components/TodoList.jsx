@@ -76,11 +76,11 @@ function TodoList(props) {
 
   return (
     <>
-      <TransitionGroup component="ul" classNames="todo-lists">
+      <TransitionGroup component="ul" classnames="todo-lists">
         {todosFiltered().map((todo, index) => (
           <CSSTransition
             key={todo.id}
-            classNames="slide-horizontal"
+            classnames="slide-horizontal"
             timeout={300}
           >
             <li key={index} className="todo-item-container">
@@ -148,7 +148,7 @@ function TodoList(props) {
       <CSSTransition
         in={isFeatureOneVisible}
         timeout={300}
-        classNames="slide-vertical"
+        classnames="slide-vertical"
         unmountOnExit
       >
         <div className="check-all-container">
@@ -161,7 +161,7 @@ function TodoList(props) {
       <CSSTransition
         in={isFeatureTwoVisible}
         timeout={300}
-        classNames="slide-vertical"
+        classnames="slide-vertical"
         unmountOnExit
       >
         <div className="other-buttons-container">

@@ -1,10 +1,5 @@
 import React, { useContext } from 'react';
-import PropTypes from 'prop-types';
 import { TodosContext } from '../context/TodosContext';
-
-TodoCompleteAll.propTypes = {
-  completeAllTodos: PropTypes.func.isRequired,
-};
 
 function TodoCompleteAll() {
   const { todos, setTodos } = useContext(TodosContext);
