@@ -6,6 +6,8 @@ import NavigationBar from './NavigationBar';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import NoMatch from './pages/NoMatch';
+import Reddit from './Reddit';
+import Joke from './Joke';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 export default function Root() {
@@ -15,6 +17,8 @@ export default function Root() {
     { path: '/contact', name: 'Contact', Component: Contact, exact: false },
     { path: '/blog', name: 'Blog', Component: Blog, exact: true },
     { path: '/blog/:id', name: 'BlogPost', Component: BlogPost, exact: false },
+    { path: '/reddit', name: 'Reddit', Component: Reddit, exact: false },
+    { path: '/joke', name: 'Joke', Component: Joke, exact: false },
     { path: '*', name: 'NoMatch', Component: NoMatch, exact: false },
   ];
 

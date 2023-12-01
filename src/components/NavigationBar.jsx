@@ -25,6 +25,16 @@ export default function NavigationBar() {
             Blog
           </NavLink>
         </li>
+        <li>
+          <NavLink to="/reddit" activeclassname="active">
+            Reddit
+          </NavLink>
+        </li>
+        <li>
+          <NavLink to="/joke" activeclassname="active">
+            Joke
+          </NavLink>
+        </li>
       </ul>
     </nav>
   );
